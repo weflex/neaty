@@ -1,6 +1,6 @@
 # Neaty
 
-Neaty is a high-extensible, open-source Node.js framework that enables you to:
+Neaty is a high-extensible, open-source Node.js framework based on [StrongLoop/loopback](https://github.com/strongloop/loopback) that enables you to:
 
 - [x] Create dynamic end-to-end REST APIs with little or no coding.
 - [x] Access data from MySQL, PostgreSQL and MongoDB.
@@ -42,6 +42,11 @@ The Neaty framework is a set of Node.js modules that you can use independently o
 * [loopback-workspace](https://github.com/strongloop/loopback-workspace)
 * [generator-loopback](https://github.com/strongloop/generator-loopback)
 
-### License
+## Thanks to:
+
+- [StrongLoop](https://github.com/stronloop): creator of the basis of this project.
+- [WeFlex](https://github.com/weflex): sponsor of this project.
+
+## License
 
 MIT @ WeFlex, Inc
