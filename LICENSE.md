@@ -1,4 +1,4 @@
-Copyright (c) 2015 WeFlex, Inc and other contributors.
+Copyright (c) 2015 Neaty and other contributors.
 
 You may use this library under the terms of the [MIT License][]
 
