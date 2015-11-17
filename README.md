@@ -49,4 +49,4 @@ The Neaty framework is a set of Node.js modules that you can use independently o
 
 ## License
 
-MIT @ WeFlex, Inc
+[MIT Licensed](./LICENSE.md)
