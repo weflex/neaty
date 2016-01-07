@@ -304,6 +304,36 @@ module.exports = function(ACL) {
         }));
       });
     }
+    // for props
+    var props = modelClass && 
+      modelClass.definition && 
+      modelClass.definition.properties;
+    Object.keys(props).filter(function(name) {
+      return 'acls' in props[name];
+    }).map(function(name) {
+      return {
+        name: name,
+        property: props[name]
+      };
+    }).reduce(function(acls, item) {
+      item.property.acls.forEach(function (acl) {
+        acls.push({
+          name: item.name,
+          acl: acl
+        });
+      });
+      return acls;
+    }, []).forEach(function (item) {
+      staticACLs.push(new ACL({
+        model: modelClass.modelName,
+        property: item.name,
+        propertyType: 'property',
+        principalType: item.acl.principalType,
+        principalId: item.acl.principalId,
+        accessType: item.acl.accessType,
+        permission: item.acl.permission
+      }));
+    });
     return staticACLs;
   };
 
@@ -409,6 +439,7 @@ module.exports = function(ACL) {
 
     var req = new AccessRequest(modelName, property, accessType, ACL.DEFAULT, methodNames);
 
+    var propertyACLs = [];
     var effectiveACLs = [];
     var staticACLs = this.getStaticACLs(model.modelName, property);
 
@@ -441,12 +472,25 @@ module.exports = function(ACL) {
           inRoleTasks.push(function(done) {
             roleModel.isInRole(acl.principalId, context,
               function(err, inRole) {
-                if (!err && inRole) {
-                  effectiveACLs.push(acl);
+                if (err) {
+                  return done(err, acl);
                 }
-                done(err, acl);
+                if (acl.propertyType === 'property') {
+                  acl.permission = inRole ? acl.permission : ACL.DENY;
+                  propertyACLs.push(acl);
+                } else {
+                  if (inRole) {
+                    effectiveACLs.push(acl);
+                  }
+                }
+                done(null, acl);
               });
           });
+        }
+
+        // push property acls
+        if (acl.propertyType === 'property') {
+          propertyACLs.push(acl);
         }
       });
 
@@ -462,7 +506,7 @@ module.exports = function(ACL) {
         }
         debug('---Resolved---');
         resolved.debug();
-        if (callback) callback(null, resolved);
+        if (callback) callback(null, resolved, propertyACLs);
       });
     });
   };
