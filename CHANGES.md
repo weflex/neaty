@@ -1,3 +1,10 @@
+2016-01-07, Version 2.26.0
+==========================
+
+ * model: add property ACLs (Yorkie Liu)
+ * model: add validations (Yorkie Liu)
+ * config: add config items: authEnabled, socketioEnabled (Yorkie Liu)
+
 2015-11-13, Version 2.25.0
 ==========================
 
