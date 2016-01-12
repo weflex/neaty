@@ -20,10 +20,13 @@
       "deprecated": true
     },
     "email": {
-      "type": "string",
-      "required": true
+      "type": "string"
     },
     "emailVerified": "boolean",
+    "phone": {
+      "type": "string"
+    },
+    "phoneVerified": "boolean",
     "verificationToken": "string",
     "status": "string",
     "created": "date",
