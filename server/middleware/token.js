@@ -93,7 +93,11 @@ function token(options) {
       }
     }
 
-    assert(typeof TokenModel === 'function',
+    if (typeof TokenModel.findForRequest !== 'function') {
+      TokenModel = app.models[options.model];
+    }
+
+    assert(typeof TokenModel.findForRequest === 'function',
       'loopback.token() middleware requires a AccessToken model');
 
     if (req.accessToken !== undefined) {
