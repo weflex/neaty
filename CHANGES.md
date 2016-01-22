@@ -1,3 +1,8 @@
+2016-01-22, Version 2.29.0
+==========================
+
+ * token: support pass token from user (Yorkie Liu)
+
 2016-01-08, Version 2.27.0
 ==========================
 
