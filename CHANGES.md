@@ -1,3 +1,8 @@
+2016-02-05, Version 2.29.2
+==========================
+
+ * application: parse as JSON if filter is string (Yorkie Liu)
+
 2016-01-22, Version 2.29.0
 ==========================
 
