@@ -12,6 +12,11 @@
       "type": "string",
       "required": true
     },
+    "version": {
+      "type": "string",
+      "required": true,
+      "default": "0.0.0"
+    },
     "description": "string",
     "icon": {
       "type": "string",
