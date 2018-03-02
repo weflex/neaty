@@ -9,9 +9,13 @@ module.exports = function(loopback) {
    * Get the current context object. The context is preserved
    * across async calls, it behaves like a thread-local storage.
    *
+   * @options {Object} [options]
+   * @property {Boolean} bind Bind get/set/bind methods of the context to the
+   * context that's current at the time getCurrentContext() is invoked. This
+   * can be used to work around 3rd party code breaking CLS context propagation.
    * @returns {ChainedContext} The context object or null.
    */
-  loopback.getCurrentContext = function() {
+  loopback.getCurrentContext = function(options) {
     // A placeholder method, see loopback.createContext() for the real version
     return null;
   };
@@ -72,8 +76,27 @@ module.exports = function(loopback) {
       ns = cls.createNamespace(scopeName);
       process.context[scopeName] = ns;
       // Set up loopback.getCurrentContext()
-      loopback.getCurrentContext = function() {
-        return ns && ns.active ? ns : null;
+      loopback.getCurrentContext = function(options) {
+          if (!ns || !ns.active) {
+          return null;
+        }
+        if (!options || !options.bind) {
+          return ns;
+        }
+        /**
+         * **NOTE**
+         * This only re-binds get, set and bind methods, the most used.
+         * If you use other methods of the context, e.g. runInContext(), etc.,
+         * you may run into unexpected issues that are fixed only for get & set.
+         */
+        var boundContext = Object.create(ns);
+        boundContext.get = boundContext.bind(ns.get);
+        boundContext.set = boundContext.bind(ns.set);
+
+        // Call to Function.prototype.bind(), not ns.bind()
+        boundContext.bind = ns.bind.bind(ns);
+
+        return boundContext;
       };
 
       chain(juggler);
